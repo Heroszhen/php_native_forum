@@ -1,0 +1,20 @@
+---tables:
+user: role(admin or visitor)
+category:
+article:
+comment(réponse):
+lesson(formation):
+employment(emploi): 
+
+
+
+---template
+https://forum.phpfrance.com/
+
+
+
+
+Class name ::class
+namespace Name\Space;
+class ClassName {}
+echo ClassName::class; -> Name\Space\ClassName
