@@ -9,5 +9,6 @@ return [
     ['GET','/admin/tous-les-articles', [],  \src\controller\admin\AdminController::class,"index"],
     ['GET','/admin/delete-article/', ['\d+'],  \src\controller\admin\AdminController::class,"deleteArticle"],
     ['GET','/admin/ajouter-article/', ['\d+'],  \src\controller\admin\AdminController::class,"editArticle"],
-    ['POST','/admin/ajouter-article/', ['\d+'],  \src\controller\admin\AdminController::class,"editArticle"]
+    ['POST','/admin/ajouter-article/', ['\d+'],  \src\controller\admin\AdminController::class,"editArticle"],
+    ['GET','/admin/toutes-les-categories', [],  \src\controller\admin\AdminController::class,"getAllCategories"],
 ];

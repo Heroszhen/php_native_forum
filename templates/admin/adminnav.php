@@ -8,7 +8,7 @@
             <div class="navbar-nav">
                 <a class="nav-link" href="/">Accueil</a>
                 <a class="nav-link" href="#">Les comptes</a>
-                <a class="nav-link" href="#">Les categories</a>
+                <a class="nav-link" href="/admin/toutes-les-categories">Les categories</a>
                 <a class="nav-link" href="/admin/tous-les-articles">Les articles</a>
                 <a class="nav-link" href="#">Les tutoriels</a>
                 <a class="nav-link" href="#">Les emplois</a>

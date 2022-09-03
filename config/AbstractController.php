@@ -3,12 +3,15 @@ namespace config;
 
 use PDO;
 use config\FlashBag;
+use config\Entity;
 
 abstract class AbstractController{
     protected $flashbag;
+    protected $entity;
 
     public function __construct(){   
         $this->flashbag = new FlashBag();
+        $this->entity = new Entity;
     }
 
     protected function render($file,$args=[]){
@@ -24,7 +27,7 @@ abstract class AbstractController{
     protected function json(array $response){
         echo json_encode($response);
     }
-
+/*
     function execRequete(string $req, array $params = [], PDO $pdo){
         // Sanitize
         if ( !empty($params)){
@@ -40,5 +43,5 @@ abstract class AbstractController{
         }
     
         return $r;
-    }
+    }*/
 }

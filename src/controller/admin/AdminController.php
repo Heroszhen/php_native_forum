@@ -8,6 +8,7 @@ use src\entity\Article;
 use src\entity\Category;
 
 class AdminController extends AbstractController{
+    //get all articles
     public function index(){
         if(!isset($_SESSION["user"]) || $_SESSION["user"]["roles"] != "admin")$this->Toredirect("");
         $_SESSION['page'] = "adminallarticles";
@@ -101,6 +102,21 @@ class AdminController extends AbstractController{
             "allcategorys" => $allcategorys,
             "article" => $article,
             "flashbag" => $this->flashbag->get()
+        ]);
+    }
+
+    public function getAllCategories(){
+        if(!isset($_SESSION["user"]) || $_SESSION["user"]["roles"] != "admin")$this->Toredirect("");
+        $_SESSION['page'] = "adminallcategorys";
+
+        $allcategories = $this->entity->findAll(new Category(),"ASC", "title");
+        foreach($allcategories as $key=>$one){
+            $req = "SELECT id FROM article WHERE category_id = :category_id";
+            $tab = $this->entity->execRequete($req, ['category_id'=>$one['id']])->fetchAll();
+            $allcategories[$key]["articles"] = $tab;
+        }
+        $this->render("admin/allcategories.php",[
+            "allcategories" => $allcategories
         ]);
     }
 }

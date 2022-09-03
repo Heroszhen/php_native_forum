@@ -6,6 +6,10 @@
 .pointer{
     cursor: pointer;
 }
+img{
+    width:100%;
+    height:auto;
+}
 
 #header-s1{
     font-size:50px;
