@@ -9,6 +9,6 @@ if [[ $1 != '' ]]
 then
     git commit -m $1
 else
-    git commit -m "majj"
+    git commit -m "maj"
 fi
 git push origin master
