@@ -5,7 +5,7 @@
 # git commit -m "maj"
 # git push origin master
 git add -A 
-if [[ $1 = '' ]]
+if [[ $1 != '' ]]
 then
     git commit -m $1
 else
