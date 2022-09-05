@@ -116,11 +116,11 @@ try {
 }
 
 //add users
-$hash = password_hash("123456789", PASSWORD_DEFAULT);
+$hash = password_hash("aaaaaaaa", PASSWORD_DEFAULT);
 execRequete(
     "INSERT INTO user (email,password,name,address,roles) VALUES (:email, :password, :name, :address, :roles)",
     [
-        "email" => "zhen@gmail.com",
+        "email" => "herosgogogogo@gmail.com",
         "password" => $hash,
         "name" => "zhen",
         "address" => "13 rue de France",

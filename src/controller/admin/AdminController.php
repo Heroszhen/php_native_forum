@@ -119,4 +119,16 @@ class AdminController extends AbstractController{
             "allcategories" => $allcategories
         ]);
     }
+
+    public function editCategory(int $id){
+        $response = [
+            "status" => 0,
+            "data" => ""
+        ];
+        if(isset($_SESSION["user"]) && $_SESSION["user"]["roles"] == "admin"){
+            $response["status"] = 1;
+            
+        }
+        $this->json($response);
+    }
 }

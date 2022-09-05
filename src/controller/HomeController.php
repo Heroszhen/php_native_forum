@@ -2,8 +2,11 @@
 namespace src\controller;
 
 use config\AbstractController;
-use config\ConnectSql;
 use src\entity\User;
+use src\observers\UserSubject;
+use src\observers\LoginEmailObserver;
+use src\observers\LoginSMSObserver;
+use vendor\ZEmail\Email;
 
 class HomeController extends AbstractController{
     
@@ -34,6 +37,15 @@ class HomeController extends AbstractController{
                 if(password_verify($user->getPassword(), $result[0]['password']) == true){
                     unset($result[0]["password"]);
                     $_SESSION["user"] = $result[0];
+
+                    $observer1 = new LoginEmailObserver(new Email());
+                    $observer2 = new LoginSMSObserver(null);
+                    $user->setAttributs($result[0]);
+                    $us = new UserSubject($user);
+                    $us->attach($observer1);
+                    $us->attach($observer2);
+                    $us->notify();
+
                     $this->Toredirect("/");
                 }
             }

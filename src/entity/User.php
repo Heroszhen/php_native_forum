@@ -140,7 +140,7 @@ class User extends AbstractEntity{
      *
      * @return string
      */
-    public function getRemoved(): string
+    public function getRemoved(): string|null
     {
         return $this->removed;
     }
@@ -152,7 +152,7 @@ class User extends AbstractEntity{
      *
      * @return self
      */
-    public function setRemoved(string $removed): self
+    public function setRemoved(string|null $removed): self
     {
         $this->removed = $removed;
 
