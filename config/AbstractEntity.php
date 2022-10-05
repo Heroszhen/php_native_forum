@@ -17,7 +17,11 @@ abstract class AbstractEntity{
         }
     }
 
-    function execRequete(string $req, array $params = []){
+    public function getPDO(){
+        return $this->pdo;
+    }
+
+    public function execRequete(string $req, array $params = []){
         // Sanitize
         if ( !empty($params)){
             foreach($params as $key => $value){
@@ -97,7 +101,7 @@ abstract class AbstractEntity{
             $req2 = " VALUES (";
             $index = 0;
             foreach($fields as $key=>$value){
-                if(property_exists($object, $key)){
+                if(property_exists($object, $key) && $key != 'id'){
                     $req .= $key;
                     $req2 .= ":$key";
                     if($index < count($fields) - 1){
@@ -110,12 +114,12 @@ abstract class AbstractEntity{
             $req .= ")";
             $req2 .= ")";
             $this->execRequete($req.$req2, $fields);
-            return $req.$req2;
+            return $this->pdo->lastInsertId();
         }else{
             $req = "UPDATE $classname SET ";
             $index = 0;
             foreach($fields as $key=>$value){
-                if(property_exists($object, $key)){
+                if(property_exists($object, $key) && $key != 'id'){
                     $req .= "$key = :$key";
                     if($index < count($fields) - 1)$req .= ",";
                 }
@@ -124,7 +128,7 @@ abstract class AbstractEntity{
             $req .= " WHERE id = :id";
             $fields["id"] = $object->getId();
             $this->execRequete($req, $fields);
-            return $req;
+            return $object->getId();
         }
     }
 }

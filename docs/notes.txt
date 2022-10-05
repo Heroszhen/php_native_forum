@@ -19,18 +19,3 @@ namespace Name\Space;
 class ClassName {}
 echo ClassName::class; -> Name\Space\ClassName
 
----Event
-<div>Dive</div>
-1)
-document.querySelector("div").addEventListener('click',(e)=>{
-    console.log(this,e);
-})
-//this->Window
-//e->PointerEvent : e.target=><div>Dive</div> 
-
-2)
-document.querySelector("div").addEventListener('click',function(e){
-    console.log(this,e);
-})
-//this-><div>Dive</div>
-//e->PointerEvent

@@ -155,7 +155,7 @@ for($i = 0; $i < 30; $i++){
     $content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
     $user_id = rand(1,2);
     $category_id = rand(1,3);
-    $title = substr($content, $i * 5 , 5);;
+    $title = substr($content, $i * 5 , 5);
     execRequete(
         "INSERT INTO article (user_id, category_id, title, content) VALUES (:user_id, :category_id, :title, :content)",
         [
@@ -163,6 +163,16 @@ for($i = 0; $i < 30; $i++){
             "category_id" => $category_id,
             "title" => $title,
             "content" => $content
+        ],
+        $pdo
+    );
+    $article_id = (int)$pdo->lastInsertId();
+    execRequete(
+        "INSERT INTO comment (user_id, article_id, content) VALUES (:user_id, :article_id, :content)",
+        [
+            "user_id" => 1,
+            "article_id" => $article_id,
+            "content" => "blablabla"
         ],
         $pdo
     );

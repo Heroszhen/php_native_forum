@@ -50,3 +50,4 @@ function sortArrayDom(tab,column, sens, isNumber=false,isDate=false,selector="")
     });
     return tab;
 }
+

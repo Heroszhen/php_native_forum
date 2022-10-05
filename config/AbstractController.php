@@ -27,21 +27,4 @@ abstract class AbstractController{
     protected function json(array $response){
         echo json_encode($response);
     }
-/*
-    function execRequete(string $req, array $params = [], PDO $pdo){
-        // Sanitize
-        if ( !empty($params)){
-            foreach($params as $key => $value){
-                $params[$key] = trim(strip_tags($value));
-            }
-        }
-    
-        $r = $pdo->prepare($req);
-        $r->execute($params);
-        if( !empty($r->errorInfo()[2]) ){
-            die('Erreur rencontrée lors de la requête : '.$r->errorInfo()[2]);
-        }
-    
-        return $r;
-    }*/
 }

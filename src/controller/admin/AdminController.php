@@ -121,13 +121,34 @@ class AdminController extends AbstractController{
     }
 
     public function editCategory(int $id){
+        $postdata = file_get_contents("php://input");
+        $array = (array)json_decode($postdata);
         $response = [
             "status" => 0,
             "data" => ""
         ];
         if(isset($_SESSION["user"]) && $_SESSION["user"]["roles"] == "admin"){
             $response["status"] = 1;
-            
+            $category = new Category();
+            if($id != 0)$category->setId($id);
+            $lastid = $this->entity->persist($category,$array);
+            $found = $this->entity->findById($category,$lastid);
+            $req = "SELECT id FROM article WHERE category_id = :category_id";
+            $tab = $this->entity->execRequete($req, ['category_id'=>$found['id']])->fetchAll();
+            $found["articles"] = $tab;
+            $response["data"] = $found;
+        }
+        $this->json($response);
+    }
+
+    public function getArticlesByCategory(int $id){
+        $response = [
+            "status" => 0,
+            "data" => ""
+        ];
+        if(isset($_SESSION["user"]) && $_SESSION["user"]["roles"] == "admin"){
+            $response["status"] = 1;
+            $response["allarticles"] = $this->entity->findBy(new Article(), ["category_id"=>$id], "desc", "id");
         }
         $this->json($response);
     }

@@ -12,4 +12,5 @@ return [
     ['POST','/admin/ajouter-article/', ['\d+'],  \src\controller\admin\AdminController::class,"editArticle"],
     ['GET','/admin/toutes-les-categories', [],  \src\controller\admin\AdminController::class,"getAllCategories"],
     ['POST','/admin/edit-category/', ['\d+'],  \src\controller\admin\AdminController::class,"editCategory"],
+    ['GET','/admin/getarticlesbycategoryid/', ['\d+'],  \src\controller\admin\AdminController::class,"getArticlesByCategory"],
 ];
