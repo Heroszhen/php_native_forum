@@ -121,7 +121,6 @@ require_once "../templates/admin/adminnav.php";
                                         echo formatDate($one["created"]);
                                     ?>
                                     <div class="d-none article-created"><?= $one["created"] ?></div>
-
                                 </td>
                                 <td>
                                     <a href="/admin/ajouter-article/<?= $one['id'] ?>"><i class="bi bi-pencil-fill"></i></a>

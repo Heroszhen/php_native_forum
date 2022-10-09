@@ -12,6 +12,10 @@ require_once "../templates/header.php";
             .bi-trash3-fill{
                 color:red;
             }
+            .bi-trash3:hover{
+                cursor: pointer;
+                color:red;
+            }
         </style>
     </head>
     <body>
@@ -70,6 +74,41 @@ require_once "../templates/admin/adminnav.php";
             <button type="submit" class="btn btn-primary">Envoyer</button>
         </div>
     </form>
+   
+    <div class="row" style="margin-top:200px">
+        <div class="col-12">
+            <h4 class="mb-2">Les commentaires (<?= count($allcomments) ?>)</h4>
+            <table class="table" id="table-comments">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Utilisateur</th>
+                        <th scope="col">Texte</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        include_once "../templates/filters.php";
+                        foreach($allcomments as $data){
+                    ?>
+                        <tr>
+                            <th scope="row"><?= $data["id"] ?></th>
+                            <td><?= $data["user_name"] ?></td>
+                            <td><?= $data["content"] ?></td>
+                            <td><?= formatDate($data['created']) ?></td>
+                            <td data-id="<?= $data["id"] ?>">
+                                <i class="bi bi-trash3"></i>
+                            </td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script src="../../js/libs/ckeditor_4.19.1_full/ckeditor.js"></script>
@@ -77,6 +116,14 @@ require_once "../templates/admin/adminnav.php";
 <script>
     $(function() {
         $('textarea').ckeditor();
+    });
+    document.getElementById("table-comments").querySelectorAll(".bi-trash3").forEach((elm)=>{
+        elm.addEventListener("click",async (e)=>{
+            let id = elm.parentElement.getAttribute("data-id");
+            let response = await get("/admin/deleteonecomment/" + id);
+            response = JSON.parse(response);
+            if(response["status"] == 1)elm.parentElement.parentElement.remove();
+        });
     });
 </script>
 <?php

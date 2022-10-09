@@ -7,17 +7,21 @@ use src\observers\UserSubject;
 use src\observers\LoginEmailObserver;
 use src\observers\LoginSMSObserver;
 use vendor\ZEmail\Email;
+use src\entity\Category;
+use src\entity\Article;
 
 class HomeController extends AbstractController{
     
     public function index(){
-        $_SESSION['page'] = "home";/*
-        $pdo = ConnectSql::getDB();
-        $req = "SELECT * FROM article";
-        $allarticles = $this->execRequete($req, [], $pdo)->fetchAll();*/
+        $_SESSION['page'] = "home";
 
+        $allcategorys = $this->entity->findAll(new Category());
+        foreach($allcategorys as $key=>$category){
+            $articles = $this->entity->findBy(new Article(), ["category_id"=>$category["id"]], "desc", "id",  5);
+            $allcategorys[$key]["articles"] = $articles;
+        }
         $this->render("home/index.php",[
-            //"allarticles" => $allarticles
+            "allcategorys" => $allcategorys
         ]);
     }
 

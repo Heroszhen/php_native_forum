@@ -6,6 +6,8 @@ use config\ConnectSql;
 use src\service\ToolsService;
 use src\entity\Article;
 use src\entity\Category;
+use src\entity\Comment;
+use src\entity\User;
 
 class AdminController extends AbstractController{
     //get all articles
@@ -35,6 +37,8 @@ class AdminController extends AbstractController{
         ];
         if(isset($_SESSION["user"]) && $_SESSION["user"]["roles"] == "admin"){
             $response["status"] = 1;
+            $allcomments = $this->entity->findBy(new Comment(), ["article_id"=>$id]);
+            foreach($allcomments as $tab)$this->entity->remove(new Comment(), ["id"=>$tab["id"]]);
             $article = new Article();
             $article->remove($article, ["id" => $id]);
         }
@@ -49,10 +53,19 @@ class AdminController extends AbstractController{
         $category = new Category();
         $allcategorys = $category->findAll($category,"asc","title");
 
+        $allcomments = [];
         $article = new Article();
         if($id != 0){
             $result = $article->findById($article,$id);
             $article->setAttributs($result);
+            $req = "select c.id, c.content, c.created ,u.name as user_name
+                    from user u, comment c
+                    where c.user_id = u.id
+                    and c.article_id = :aid
+                    group by c.id
+                    order by c.id desc
+            ";
+            $allcomments = ($this->entity->execRequete($req,['aid'=>$id]))->fetchAll();
         }
         if(isset($_POST["action"]) && $_POST["action"] == "editarticle"){
             $article->setAttributs($_POST);
@@ -101,8 +114,21 @@ class AdminController extends AbstractController{
             "id" => $id,
             "allcategorys" => $allcategorys,
             "article" => $article,
+            "allcomments" => $allcomments,
             "flashbag" => $this->flashbag->get()
         ]);
+    }
+
+    public function deleteComment(int $id){
+        $response = [
+            "status" => 0,
+            "data" => ""
+        ];
+        if(isset($_SESSION["user"]) && $_SESSION["user"]["roles"] == "admin"){
+            $response["status"] = 1;
+            $comment = $this->entity->remove(new Comment(), ["id"=>$id]);
+        }
+        $this->json($response);
     }
 
     public function getAllCategories(){

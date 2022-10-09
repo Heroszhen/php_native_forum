@@ -167,13 +167,18 @@ for($i = 0; $i < 30; $i++){
         $pdo
     );
     $article_id = (int)$pdo->lastInsertId();
-    execRequete(
-        "INSERT INTO comment (user_id, article_id, content) VALUES (:user_id, :article_id, :content)",
-        [
-            "user_id" => 1,
-            "article_id" => $article_id,
-            "content" => "blablabla"
-        ],
-        $pdo
-    );
+    $author = 1;
+    for($j = 0; $j < 10; $j++){
+        if($author == 1)$author = 2;
+        else $author = 1;
+        execRequete(
+            "INSERT INTO comment (user_id, article_id, content) VALUES (:user_id, :article_id, :content)",
+            [
+                "user_id" => $author,
+                "article_id" => $article_id,
+                "content" => $content
+            ],
+            $pdo
+        );
+    }
 }
