@@ -57,6 +57,45 @@ img{
     cursor: pointer;
 }
 
+.theme{
+    min-height:calc(100vh - 75px - 56px);
+    background-color:rgb(238,238,238);
+    padding-bottom:10px;
+}
+
+.onearticle{
+    padding:20px 30px;
+    background-color: #fff;
+    border-bottom: solid 1px rgb(175, 175, 175);
+    transition:.5s;
+}
+.onearticle:hover{
+    box-shadow: 0 3px 25px 0 rgb(0 0 0 / 20%);
+}
+.onearticle .author{
+    display:flex;
+    justify-content: space-between;
+    border-bottom: solid 1px #eee;
+    padding:5px 0;
+}
+.onearticle .author .name{
+    color:#3b96e2;
+    font-size:20px;
+    font-weight: bold;
+}
+.onearticle .content{
+    padding:5px 0;
+}
+
+.panel-header{
+    background-color: #888;
+    padding: 15px;
+    color:white;
+}
+
+.no-radius{
+    border-radius:0 !important;
+}
 
 
 /*admin*/

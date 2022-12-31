@@ -5,7 +5,7 @@ function formatDate(string $datetime){
     return $date->format("d/m/Y H:i:s");
 }
 
-function showArray(array $tab){
+function dump(array $tab){
     echo "<pre>";
     var_dump($tab);
     echo "</pre>";

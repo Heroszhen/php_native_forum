@@ -2,7 +2,7 @@
 namespace src\service;
 
 class ToolsService{
-    function showArray(array $tab){
+    public static function dump(array $tab){
         echo "<pre>";
         var_dump($tab);
         echo "</pre>";

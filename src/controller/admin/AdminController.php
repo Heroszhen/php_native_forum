@@ -37,8 +37,8 @@ class AdminController extends AbstractController{
         ];
         if(isset($_SESSION["user"]) && $_SESSION["user"]["roles"] == "admin"){
             $response["status"] = 1;
-            $allcomments = $this->entity->findBy(new Comment(), ["article_id"=>$id]);
-            foreach($allcomments as $tab)$this->entity->remove(new Comment(), ["id"=>$tab["id"]]);
+            $allcomments = $this->entity->findBy(Comment::class, ["article_id"=>$id]);
+            foreach($allcomments as $tab)$this->entity->remove(Comment::class, ["id"=>$tab["id"]]);
             $article = new Article();
             $article->remove($article, ["id" => $id]);
         }
@@ -50,13 +50,12 @@ class AdminController extends AbstractController{
 
         $this->flashbag->empty();
         
-        $category = new Category();
-        $allcategorys = $category->findAll($category,"asc","title");
+        $allcategorys = $this->entity->findAll(Category::class,"asc","title");
 
         $allcomments = [];
         $article = new Article();
         if($id != 0){
-            $result = $article->findById($article,$id);
+            $result = $article->findById(Article::class,$id);
             $article->setAttributs($result);
             $req = "select c.id, c.content, c.created ,u.name as user_name
                     from user u, comment c
@@ -80,26 +79,6 @@ class AdminController extends AbstractController{
                 $_POST["content"] = htmlspecialchars($_POST["content"]);
                 $article->persist($article,$_POST);
                 
-                /*
-                if($id == 0){
-                    $req = "INSERT INTO article (user_id,category_id,title,content) VALUES (:user_id,:category_id,:title,:content)";
-                    $params = [
-                        "user_id" => $_SESSION["user"]["id"],
-                        "category_id" => $article->getCategory_id(),
-                        "title" => $article->getTitle(),
-                        "content" => $article->getContent()
-                    ];
-                }else{
-                    $req = "UPDATE article SET category_id = :category_id, title = :title, content = :content WHERE id = :id";
-                    $params = [
-                        "category_id" => $article->getCategory_id(),
-                        "title" => $article->getTitle(),
-                        "content" => $article->getContent(),
-                        "id" => $id
-                    ];
-                }
-                $this->execRequete($req, $params, $pdo);
-                */
                 if($id == 0){
                     $this->Toredirect("/admin/tous-les-articles");
                 }else{
@@ -126,7 +105,7 @@ class AdminController extends AbstractController{
         ];
         if(isset($_SESSION["user"]) && $_SESSION["user"]["roles"] == "admin"){
             $response["status"] = 1;
-            $comment = $this->entity->remove(new Comment(), ["id"=>$id]);
+            $comment = $this->entity->remove(Comment::class, ["id"=>$id]);
         }
         $this->json($response);
     }
@@ -135,7 +114,7 @@ class AdminController extends AbstractController{
         if(!isset($_SESSION["user"]) || $_SESSION["user"]["roles"] != "admin")$this->Toredirect("");
         $_SESSION['page'] = "adminallcategorys";
 
-        $allcategories = $this->entity->findAll(new Category(),"ASC", "title");
+        $allcategories = $this->entity->findAll(Category::class,"ASC", "title");
         foreach($allcategories as $key=>$one){
             $req = "SELECT id FROM article WHERE category_id = :category_id";
             $tab = $this->entity->execRequete($req, ['category_id'=>$one['id']])->fetchAll();
@@ -158,7 +137,7 @@ class AdminController extends AbstractController{
             $category = new Category();
             if($id != 0)$category->setId($id);
             $lastid = $this->entity->persist($category,$array);
-            $found = $this->entity->findById($category,$lastid);
+            $found = $this->entity->findById(Category::class,$lastid);
             $req = "SELECT id FROM article WHERE category_id = :category_id";
             $tab = $this->entity->execRequete($req, ['category_id'=>$found['id']])->fetchAll();
             $found["articles"] = $tab;
@@ -174,7 +153,7 @@ class AdminController extends AbstractController{
         ];
         if(isset($_SESSION["user"]) && $_SESSION["user"]["roles"] == "admin"){
             $response["status"] = 1;
-            $response["allarticles"] = $this->entity->findBy(new Article(), ["category_id"=>$id], "desc", "id");
+            $response["allarticles"] = $this->entity->findBy(Article::class, ["category_id"=>$id], "desc", "id");
         }
         $this->json($response);
     }

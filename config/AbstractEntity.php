@@ -38,23 +38,24 @@ abstract class AbstractEntity{
         return $r;
     }
 
-    private function getClassname(object $object){
-        $fullname = get_class($object);
+    private function getClassname($class){
+        if(gettype($class) == "string")$fullname = get_class(new $class);
+        else $fullname = get_class($class);
         $tab = explode("\\",$fullname);
         $name = end($tab);
         return strtolower($name);
     }
 
-    public function findById(object $object,int $id){
-        $classname = $this->getClassname($object);
+    public function findById($class,int $id){
+        $classname = $this->getClassname($class);
         $req = "SELECT * From $classname WHERE id = :id";
         $result = $this->execRequete($req, ["id"=>$id])->fetch();
 
         return $result;
     }
 
-    public function findAll(object $object,string $order = "", string $field = "",int $limit = null){
-        $classname = $this->getClassname($object);
+    public function findAll($class,string $order = "", string $field = "",int $limit = null){
+        $classname = $this->getClassname($class);
         $req = "SELECT * From $classname";
         if($order != "")$req .= " ORDER BY $field $order";
         if($limit != null)$req .= " LIMIT $limit";
@@ -63,8 +64,8 @@ abstract class AbstractEntity{
         return $result;
     }
 
-    public function findBy(object $object, array $fields, string $order = "", string $field = "",  int $limit = null){
-        $classname = $this->getClassname($object);
+    public function findBy($class, array $fields, string $order = "", string $field = "",  int $limit = null){
+        $classname = $this->getClassname($class);
         $req = "SELECT * FROM $classname";
         if(count($fields) > 0)$req .= " WHERE ";
         $index = 0;
@@ -81,8 +82,8 @@ abstract class AbstractEntity{
         return $result;
     }
 
-    public function remove(object $object, array $fields){
-        $classname = $this->getClassname($object);
+    public function remove($class, array $fields){
+        $classname = $this->getClassname($class);
         $req = "DELETE FROM $classname";
         if(count($fields) > 0)$req .= " WHERE ";
         $index = 0;
@@ -94,8 +95,9 @@ abstract class AbstractEntity{
         $this->execRequete($req, $fields);
     }
 
-    public function persist(object $object, array $fields){
+    public function persist($object, array $fields){
         $classname = $this->getClassname($object);
+        unset($fields["action"]);
         if($object->getId() == null){
             $req = "INSERT INTO $classname (";
             $req2 = " VALUES (";

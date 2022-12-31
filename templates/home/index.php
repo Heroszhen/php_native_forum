@@ -29,14 +29,38 @@ require_once "../templates/header.php";
             #home .onecategory.close .bi-arrow-down-circle{
                 display:block;
             }
+            #home .onecategory #list-articles{
+                transition:1s;
+            }
             #home .onecategory.close #list-articles{
-                display:none;
+                height:0;
+                overflow: hidden;
             }
             #home .onecategory .onearticle{
                 display:block;
                 padding: 10px 30px;
                 background-color: #fff;
                 transition:.5s;
+                display:flex;
+            }
+            #home .onecategory .onearticle>div:nth-child(1){
+                width:60%;
+            }
+            #home .onecategory .onearticle>div{
+                width:13%;
+                padding-right:10px;
+                overflow: hidden;
+            }
+            #home .onecategory .onearticle>div:last-child{
+                color: #3b96e2;
+                font-weight:bold;
+            }
+            #home .onecategory .onearticle .content{
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width:99%;
+                height:24px;
             }
             #home .onecategory .onearticle:nth-child(even) {
                 background-color: #f9f9f9;
@@ -71,13 +95,17 @@ require_once "../templates/nav.php";
                         </div>
                         <div id="list-articles">
                             <?php
+                                include_once "../templates/filters.php";
                                 foreach($data["articles"] as $data2){
                             ?>
                                 <a href="/post/<?= $data2['id'] ?>" class="onearticle">
                                     <div>
                                         <?= $data2["title"] ?>
-                                        <div class="content"></div>
+                                        <div class="content"><?= htmlspecialchars_decode($data2["content"]) ?></div>
                                     </div>
+                                    <div><?= $data2["username"] ?></div>
+                                    <div><?= formatDate($data2["created"]) ?></div>
+                                    <div><?= $data2["total_comments"] ?> commentaires</div>
                                 </a>
                             <?php
                                 }

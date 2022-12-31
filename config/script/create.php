@@ -168,7 +168,7 @@ for($i = 0; $i < 30; $i++){
     );
     $article_id = (int)$pdo->lastInsertId();
     $author = 1;
-    for($j = 0; $j < 10; $j++){
+    for($j = 0; $j < 5; $j++){
         if($author == 1)$author = 2;
         else $author = 1;
         execRequete(
